@@ -18,7 +18,7 @@ import java.util.List;
 public class VendasApplication {
 
     @Bean
-    public CommandLineRunner init (@Autowired Clientes clientes){
+    public CommandLineRunner init (@Autowired Clientes clientes) {
         return args -> {
             System.out.println("salvando clientes");
             clientes.salvar(new Cliente("Douglas"));
@@ -35,29 +35,26 @@ public class VendasApplication {
                 clientes.atualizar(c);
             });
 
+            todosClientes.forEach(System.out::println);
+
             System.out.println("buscando cliente por nome");
             clientes.buscarPorNome("Do").forEach(System.out::println);
 
- /*           System.out.println("deletando cliente");
+            System.out.println("deletando cliente");
             clientes.obterTodos().forEach(c -> {
                 clientes.deletar(c);
-            });*/
+            });
 
             todosClientes = clientes.obterTodos();
-            if(todosClientes.isEmpty()){
+            if (todosClientes.isEmpty()) {
                 System.out.println("Nenhum cliente encontrado ");
-            }
-            else {
+            } else {
                 todosClientes.forEach(System.out::println);
             }
 
 
-
         };
     }
-
-
-
 
     public static void main(String[] args) {
         SpringApplication.run(VendasApplication.class, args);
