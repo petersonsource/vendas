@@ -23,7 +23,8 @@ public class VendasApplication {
             @Autowired Pedidos pedidos
     ) {
         return args -> {
-            Cliente cliente  = new Cliente(null, "Fulano");
+            Cliente cliente  = new Cliente();
+            cliente.setNome("Fulano");
             Cliente clienteSaved = clientes.save(cliente);
             System.out.println(clienteSaved);
         };
