@@ -14,6 +14,7 @@ package github.com.petersonsource.rest.dto;
 }
  */
 
+import github.com.petersonsource.validation.contraintValidation.NotEmptyList;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,6 +32,7 @@ public class PedidoDTO {
     private Integer cliente;
     @NotNull(message = "o total do pedido é obrigatorio")
     private BigDecimal total;
+    @NotEmptyList(message = "pedido não popde ser realizado sem itens")
     private List<ItemPedidoDTO> itens;
 
 }
