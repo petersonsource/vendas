@@ -2,6 +2,8 @@ package github.com.petersonsource.rest.controller;
 
 import github.com.petersonsource.domain.entity.ItemPedido;
 import github.com.petersonsource.domain.entity.Pedido;
+import github.com.petersonsource.domain.enums.StatusPedido;
+import github.com.petersonsource.rest.dto.AtualizacaoStatusPedidoDTO;
 import github.com.petersonsource.rest.dto.InformacaoItemPedidoDTO;
 import github.com.petersonsource.rest.dto.InformacoesPedidoDTO;
 import github.com.petersonsource.rest.dto.PedidoDTO;
@@ -41,6 +43,13 @@ public class PedidoController {
                 .obterPedidoCompleto(id)
                 .map( p -> converter(p) )
                 .orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido não encontrado."));
+    }
+
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateStatus(@PathVariable Integer id, @RequestBody AtualizacaoStatusPedidoDTO dto){
+            String novoStatus = dto.getNovoStatus();
+            service.atualizaStatus(id, StatusPedido.valueOf(novoStatus) );
     }
 
     private InformacoesPedidoDTO converter(Pedido pedido){

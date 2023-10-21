@@ -9,6 +9,7 @@ import github.com.petersonsource.domain.repository.Clientes;
 import github.com.petersonsource.domain.repository.ItemsPedido;
 import github.com.petersonsource.domain.repository.Pedidos;
 import github.com.petersonsource.domain.repository.Produtos;
+import github.com.petersonsource.exception.PedidoNaoEncontradoException;
 import github.com.petersonsource.exception.RegraNegocioException;
 import github.com.petersonsource.rest.dto.ItemPedidoDTO;
 import github.com.petersonsource.rest.dto.PedidoDTO;
@@ -57,7 +58,15 @@ public class PedidoServiceImpl implements PedidoService {
         return repository.findByIdFetchItens(id);
     }
 
-
+    @Override
+    @Transactional
+    public void atualizaStatus(Integer id, StatusPedido statusPedido) {
+        repository.findById(id)
+                .map( pedido -> {
+                    pedido.setStatus(statusPedido);
+                    return repository.save(pedido);
+                }).orElseThrow( () -> new PedidoNaoEncontradoException() );
+    }
 
 
     private List<ItemPedido> converterItems(Pedido pedido, List<ItemPedidoDTO> itens){
