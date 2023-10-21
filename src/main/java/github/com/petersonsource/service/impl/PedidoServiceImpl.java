@@ -4,6 +4,7 @@ import github.com.petersonsource.domain.entity.Cliente;
 import github.com.petersonsource.domain.entity.ItemPedido;
 import github.com.petersonsource.domain.entity.Pedido;
 import github.com.petersonsource.domain.entity.Produto;
+import github.com.petersonsource.domain.enums.StatusPedido;
 import github.com.petersonsource.domain.repository.Clientes;
 import github.com.petersonsource.domain.repository.ItemsPedido;
 import github.com.petersonsource.domain.repository.Pedidos;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,6 +42,7 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setTotal(dto.getTotal());
         pedido.setDataPedido(LocalDate.now());
         pedido.setCliente(cliente);
+        pedido.setStatus(StatusPedido.REALIZADO);
         List<ItemPedido> itensPedido = converterItems(pedido, dto.getItens());
 
        repository.save(pedido);
@@ -48,6 +51,14 @@ public class PedidoServiceImpl implements PedidoService {
        return pedido;
 
     }
+
+    @Override
+    public Optional<Pedido> obterPedidoCompleto(Integer id) {
+        return repository.findByIdFetchItens(id);
+    }
+
+
+
 
     private List<ItemPedido> converterItems(Pedido pedido, List<ItemPedidoDTO> itens){
         if(itens.isEmpty()){

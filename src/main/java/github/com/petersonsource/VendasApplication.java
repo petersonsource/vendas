@@ -25,6 +25,7 @@ public class VendasApplication {
         return args -> {
             Cliente cliente  = new Cliente();
             cliente.setNome("Fulano");
+            cliente.setCpf("35503129892");
             Cliente clienteSaved = clientes.save(cliente);
             System.out.println(clienteSaved);
         };
