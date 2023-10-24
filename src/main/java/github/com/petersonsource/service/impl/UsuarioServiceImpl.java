@@ -2,6 +2,7 @@ package github.com.petersonsource.service.impl;
 
 import github.com.petersonsource.domain.entity.Usuario;
 import github.com.petersonsource.domain.repository.UsuarioRepository;
+import github.com.petersonsource.exception.UsuarioSenhaInvalidaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +26,15 @@ public class UsuarioServiceImpl implements UserDetailsService {
        return repository.save(usuario);
     }
 
+    public UserDetails autenticar(Usuario usuario){
+        UserDetails user = loadUserByUsername(usuario.getLogin());
+        boolean senhasBatem = encoder.matches(usuario.getSenha(), user.getPassword());
+        if(senhasBatem){
+            return user;
+        }
+        throw new UsuarioSenhaInvalidaException();
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Usuario usuario = repository.findByLogin(username)
@@ -39,4 +49,5 @@ public class UsuarioServiceImpl implements UserDetailsService {
                 .roles(roles)
                 .build();
     }
+
 }

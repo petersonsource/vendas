@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class ApplicationControllerAdvice {
 
-    @ExceptionHandler(RuntimeException.class)
+    @ExceptionHandler(RegraNegocioException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiErros handleRegraNegocioException(RegraNegocioException ex){
         String mensagemErro = ex.getMessage();
