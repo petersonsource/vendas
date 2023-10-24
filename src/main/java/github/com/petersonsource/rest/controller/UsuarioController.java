@@ -3,11 +3,9 @@ package github.com.petersonsource.rest.controller;
 import github.com.petersonsource.domain.entity.Usuario;
 import github.com.petersonsource.service.impl.UsuarioServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -21,6 +19,7 @@ public class UsuarioController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Usuario salvar(@RequestBody @Valid Usuario usuario){
         String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
         usuario.setSenha(senhaCriptografada);
